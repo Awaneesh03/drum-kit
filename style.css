@@ -1,0 +1,202 @@
+:root{
+  --bg1: #0a0a0a;
+  --bg2: #1a1a2e;
+  --accent: #ff0080;
+  --accent-2: #00ffff;
+  --accent-3: #8000ff;
+  --glow: rgba(255, 0, 128, 0.5);
+  --glow-2: rgba(0, 255, 255, 0.5);
+  --glass: rgba(255,255,255,0.05);
+  --glass-2: rgba(255,255,255,0.1);
+}
+
+/* Cyberpunk layout */
+*{box-sizing: border-box}
+body{
+  min-height:100vh;
+  margin:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--bg1);
+  color:#ffffff;
+  font-family: 'Courier New', monospace;
+  -webkit-font-smoothing:antialiased;
+  overflow-x: hidden;
+}
+
+#particle-canvas{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(45deg, var(--bg1), var(--bg2));
+}
+
+.container{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:20px;
+  padding: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+h1{
+  margin: 30px 0 0;
+  font-weight:700;
+  letter-spacing: 4px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--accent);
+  text-transform:uppercase;
+  text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow); }
+  to { text-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow); }
+}
+
+.subtitle{
+  opacity:0.9;
+  margin-top:-10px;
+  color: var(--accent-2);
+  text-shadow: 0 0 10px var(--glow-2);
+}
+
+.description{
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.glow-divider{
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 10px var(--accent);
+  margin: 20px 0;
+}
+
+.set{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 150px));
+  gap:20px;
+  align-items:center;
+  justify-content:center;
+  padding: 30px;
+  width: min(900px, 95vw);
+}
+
+.drum{
+  --size: 130px;
+  height: var(--size);
+  width: var(--size);
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--glass), var(--glass-2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight:800;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(255, 0, 128, 0.3), inset 0 0 20px rgba(255, 0, 128, 0.1);
+  background-size: cover;
+  background-position:center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.drum:nth-child(odd){ animation-delay: 0s; }
+.drum:nth-child(even){ animation-delay: 1.5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.drum:focus{outline:none; box-shadow: 0 0 30px var(--glow)}
+
+.drum:hover{
+  transform: scale(1.05);
+  box-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow);
+  border-color: var(--accent-2);
+}
+
+.drum .key-note{
+  position:absolute;right:10px;top:10px;font-size:0.8rem;color:var(--accent-2);font-weight:600;
+  text-shadow: 0 0 5px var(--glow-2);
+}
+
+.pressed{
+  transform: scale(0.9) !important;
+  background: var(--accent) !important;
+  color: #000 !important;
+  box-shadow: 0 0 50px var(--glow) !important;
+  animation: none !important;
+}
+
+/* ripple element created by JS */
+.ripple{
+  position:absolute;
+  border-radius:50%;
+  transform: translate(-50%,-50%) scale(0);
+  pointer-events:none;
+  width: 15px; height:15px;
+  background: radial-gradient(circle, var(--accent-2), var(--accent));
+  mix-blend-mode: screen;
+  animation: ripple 800ms cubic-bezier(.12,.9,.24,1);
+}
+
+@keyframes ripple{
+  from{opacity:1; transform: translate(-50%,-50%) scale(0)}
+  to{opacity:0; transform: translate(-50%,-50%) scale(15)}
+}
+
+/* keep pictured backgrounds for drum types if present */
+.w{ background-image: url("images/tom1.png"); border-color: var(--accent); }
+.a{ background-image: url("images/tom2.png"); border-color: var(--accent-2); }
+.s{ background-image: url("images/tom3.png"); border-color: var(--accent-3); }
+.d{ background-image: url("images/tom4.png"); border-color: var(--accent); }
+.j{ background-image: url("images/snare.png"); border-color: var(--accent-2); }
+.k{ background-image: url("images/crash.png"); border-color: var(--accent-3); }
+.l{ background-image: url("images/kick.png"); border-color: var(--accent); }
+
+.tips-box{
+  background: var(--glass);
+  border: 1px solid var(--accent-2);
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.tips-box h2{
+  color: var(--accent-2);
+  text-shadow: 0 0 10px var(--glow-2);
+}
+
+/* reduced motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .drum, .ripple, h1{ animation:none; transition:none; }
+}
+
+/* small footer spacing */
+footer{
+  opacity:.8;
+  font-size:.9rem;
+  margin-bottom:20px;
+  color: var(--accent-3);
+  text-shadow: 0 0 5px var(--glow);
+}
